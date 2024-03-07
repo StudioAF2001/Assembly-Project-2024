@@ -1,6 +1,5 @@
 # Reverse Engineering Project README
 
----
 
 ### Author: Andrew Skelly
 ### Student Number: C00261511
