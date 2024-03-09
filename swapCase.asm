@@ -84,36 +84,36 @@ _start:
 ;;; length of string (RSI)
 ;;; Returns 1 if successful (RAX)
 swapcase:
-	push rbp
+	push rbp			;initialise stack
 	mov rbp,rsp
 loop:
-	mov al,[rdi]
-	cmp al,65
+	mov al,[rdi]		; move first letter of text into al
+	cmp al,65			; less than ASCII 65? leave alone
 	jl next
-	cmp al,122
+	cmp al,122			; greater than ASCII 122? leave alone
 	jg next
-	cmp al,90
+	cmp al,90			; if letter in range ASCII 65-90 -> is uppercase so convert to lower
 	jle conv_lower
-	cmp al,97
+	cmp al,97			; if letter in range ASCII 97-122 -> is lowercase so convert to upper
 	jge conv_upper
 conv_upper:
-	sub al,32
-	jmp next
+	sub al,32			; subtract 32 to convert to uppercase
+	jmp next			; done with this letter now so move onto next
 conv_lower:
-	add al,32
-	jmp next
+	add al,32			; add 32 to convert to lowercase
+	jmp next			; done with this letter now so move onto next
 next:
-	mov [rdi], al
-	add rdi,1
-	sub rsi,1
-	cmp rsi,0
-	je end
-	jmp loop
+	mov [rdi], al		; override old letter with new, changed case latter
+	add rdi,1			; add 1 to our counter
+	sub rsi,1			; subtract 1 from the overall length of our text
+	cmp rsi,0			; check to see if we have reached the end of out text
+	je end				; if so, jump to end
+	jmp loop			; otherwise, keep looping
 end:
-	mov rax,1
-	mov rsp,rbp
+	mov rax,1			; return 1
+	mov rsp,rbp			; reset our stack
 	pop rbp
-	ret
+	ret					; return to main
 	
 
 ;;; Sample procedure that does a ROT47 encryption/decryption routine
